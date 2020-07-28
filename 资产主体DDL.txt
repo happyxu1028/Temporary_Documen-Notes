@@ -1,0 +1,30 @@
+-- 建表
+create table asset_subject
+(
+    id                bigint auto_increment comment '主键ID'
+        primary key,
+    asset_line        varchar(16)            not null comment '资产业务线 1:资产卡片 2:进场费',
+    subject_code      int                    not null comment '资产主体编码',
+    subject_name      varchar(32)            not null comment '资产主体名称',
+    type              tinyint(2)             not null comment '资产主体类型 1-我司; 2-代理商',
+    mapping_source    int                    not null comment '映射来源  1-供应链 2-易快报 3-合同',
+    source_subject_id varchar(32) default '' not null comment '源主体编码',
+    status            int                    null comment '状态  1:使用中  -1:暂停',
+    gmt_create        bigint                 not null comment '创建时间',
+    gmt_update        bigint                 not null comment '修改时间',
+    deleted           tinyint(1)             not null comment '是否已删除'
+)
+    comment '资产主体表';
+
+create index idx_gmt_create
+    on asset_subject (gmt_create);
+
+create index idx_gmt_update
+    on asset_subject (gmt_update);
+
+create index idx_mapping
+    on asset_subject (asset_line, mapping_source, source_subject_id);
+
+create index idx_status
+    on asset_subject (status);
+
